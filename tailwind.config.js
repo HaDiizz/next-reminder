@@ -12,6 +12,27 @@ module.exports = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      colors: {
+        primary: "#EB6424",
+        secondary: "#FA9500",
+        tertiary: "#FFDAC6",
+      },
+      keyframes: {
+        shake: {
+          '0%, 100%': {
+            transform: 'rotate(0deg)',
+          },
+          '10%, 30%, 50%, 70%, 90%': {
+            transform: 'rotate(-10deg)',
+          },
+          '20%, 40%, 60%, 80%': {
+            transform: 'rotate(10deg)',
+          },
+        },
+      },
+      animation: {
+        shake: 'shake 3s ease-in-out infinite',
+      },
     },
   },
   plugins: [],
