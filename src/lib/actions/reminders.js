@@ -58,3 +58,29 @@ export async function getReminders(tab) {
     return { error: true, message: "Failed to get reminders 🥺" };
   }
 }
+
+export async function deleteReminder(id) {
+  const session = await getServerSession(authOptions);
+  try {
+    if (!session) {
+      throw new Error("Unauthorized.");
+    }
+
+    const cookieStore = cookies();
+    const tokenCookie = cookieStore.get("token");
+    if (!tokenCookie.value) {
+      throw new Error("Invalid token.");
+    }
+    if (!id) {
+      throw new Error("Invalid reminder id.");
+    }
+    await axios.delete(`/reminders/delete/${id}`, {
+      headers: { Authorization: `Bearer ${tokenCookie.value}` },
+    });
+    revalidatePath("/");
+    return { success: true, message: "Deleted successful. 👍" };
+  } catch (err) {
+    console.log("Failed to delete reminders. " + err);
+    return { error: true, message: "Failed to delete reminder 🥺" };
+  }
+}

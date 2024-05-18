@@ -5,9 +5,32 @@ import { useDisclosure } from "@mantine/hooks";
 import { DotsVerticalIcon, TrashIcon } from "@radix-ui/react-icons";
 import TimeCountDown from "./TimeCountDown";
 import moment from "moment";
+import { deleteReminder } from "@/lib/actions/reminders";
+import { notifications } from "@mantine/notifications";
 
 const ReminderCardItem = ({ item }) => {
   const [opened, { open, close }] = useDisclosure(false);
+
+  const handleDeleteReminder = async (id) => {
+    const result = await deleteReminder(id);
+
+    if (result.success) {
+      notifications.show({
+        title: "Woo yay! 🎉",
+        message: result.message,
+        color: "green",
+      });
+      return;
+    }
+    if (result.error) {
+      notifications.show({
+        title: "Oops! Something went wrong! 👻",
+        message: result.message,
+        color: "red",
+      });
+      return;
+    }
+  };
   return (
     <div className="col-span-4 rounded overflow-hidden shadow-lg border border-secondary hover:border-primary p-5 hover:shadow-[0px_0px_20px_3px_#f6ad55]">
       <div className="flex justify-between h-10">
@@ -18,7 +41,7 @@ const ReminderCardItem = ({ item }) => {
           </Menu.Target>
           <Menu.Dropdown>
             <Menu.Item
-              onClick={() => alert("HELLO")}
+              onClick={() => handleDeleteReminder(item.id)}
               color="red"
               leftSection={
                 <TrashIcon style={{ width: rem(14), height: rem(14) }} />
