@@ -1,9 +1,8 @@
 "use server";
 
-import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
 import { axios } from "@/lib/axios";
 import { validateEmail } from "@/utils/validateEmail";
+import { cookies } from "next/headers";
 
 export async function registerAction(data) {
   const { email, username, password, confirmPassword } = data;
@@ -18,8 +17,7 @@ export async function registerAction(data) {
     if (!validateEmail(email)) {
       throw new Error("Email invalid.");
     }
-    const response = await axios.post("/register", data);
-    console.log(response.data);
+    await axios.post("/register", data);
     await new Promise((resolve) => setTimeout(resolve, 1000));
     return { success: true, message: "Registered successful" };
   } catch (err) {
@@ -28,20 +26,13 @@ export async function registerAction(data) {
   }
 }
 
-export async function loginAction(data) {
-  const { username, password } = data;
-
+export async function logOutAction() {
   try {
-    if (!username || !password) {
-      throw new Error("Fields are required.");
-    }
-
-    const response = await axios.post("/login", data);
-    console.log(response.data);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    return { success: true, message: "Signed in successful" };
+    await axios.post("/logout");
+    await cookies().delete("token");
+    return { success: true, message: "Signed out successful" };
   } catch (err) {
-    console.log("Failed to sign up. " + err);
-    return { error: true, message: "Failed to sign up" };
+    console.log("Failed to sign in. " + err);
+    return { error: true, message: "Failed to sign out" };
   }
 }

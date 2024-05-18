@@ -29,3 +29,17 @@ export const loginFormSchema = z.object({
     .string()
     .min(6, { message: "Password must be at least 6 characters" }),
 });
+
+export const reminderFormSchema = z.object({
+  title: z
+    .string()
+    .min(1, { message: "Title is required." })
+    .max(30, { message: "Title must not exceed 30 characters." }),
+  description: z
+    .string()
+    .min(1, { message: "Description is required." })
+    .max(100, { message: "Description must not exceed 100 characters." }),
+  remindAt: z.date().refine((date) => date > new Date(), {
+    message: "Reminder time must be set in the future.",
+  }),
+});
