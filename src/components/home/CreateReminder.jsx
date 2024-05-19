@@ -48,6 +48,7 @@ const CreateReminder = () => {
         color: "green",
       });
       await close();
+      await reset();
     }
   };
 

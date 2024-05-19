@@ -21,13 +21,9 @@ export async function createReminder(data) {
     if (!tokenCookie.value) {
       throw new Error("Invalid token.");
     }
-    await axios.post(
-      "/reminders/create",
-      { ...data, userId: session.user.id },
-      {
-        headers: { Authorization: `Bearer ${tokenCookie.value}` },
-      }
-    );
+    await axios.post("/reminders/create", data, {
+      headers: { Authorization: `Bearer ${tokenCookie.value}` },
+    });
     revalidatePath("/");
     return { success: true, message: "Created reminder successful 👏" };
   } catch (err) {
