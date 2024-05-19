@@ -3,7 +3,7 @@ import "@mantine/dates/styles.css";
 import "./globals.css";
 import "@mantine/notifications/styles.css";
 import { Space_Grotesk } from "next/font/google";
-import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import { ColorSchemeScript } from "@mantine/core";
 import { NavigationProgress } from "@mantine/nprogress";
 import NavBar from "@/components/nav/NavBar";
 import { Notifications } from "@mantine/notifications";
@@ -25,12 +25,14 @@ export default async function RootLayout({ children }) {
       <head>
         <ColorSchemeScript />
       </head>
-      <body className={`${inter.className} h-screen`}>
+      <body className={`${inter.className}`}>
         <Providers session={session}>
           <NavigationProgress />
           <NavBar />
           <Notifications />
-          {children}
+          <main className="w-full min-h-screen overflow-hidden bg-cover">
+            {children}
+          </main>
         </Providers>
       </body>
     </html>

@@ -14,7 +14,7 @@ export default async function Home() {
   return (
     <>
       {session ? (
-        <div className="max-w-7xl mx-auto p-5">
+        <div className="max-w-7xl mx-auto p-5 pt-[7rem]">
           <div className="flex justify-end pb-5 md:pb-0 pt-8">
             <CreateReminder />
           </div>
@@ -32,7 +32,7 @@ export default async function Home() {
           </Suspense>
         </div>
       ) : (
-        <div className="flex flex-col gap-y-4 justify-center items-center h-full md:h-[calc(100%-82px)]">
+        <div className="h-screen flex flex-col gap-y-4 justify-center items-center">
           <Image
             src="/login.svg"
             alt="login picture"

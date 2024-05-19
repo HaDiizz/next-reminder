@@ -10,7 +10,7 @@ const Page = async () => {
     redirect("/");
   }
   return (
-    <div className="h-full md:h-[calc(100%-82px)] max-w-7xl mx-auto flex flex-col md:flex-row justify-center md:justify-between gap-x-5 p-5 items-center">
+    <div className="h-screen pt-[4rem] md:pt-[7rem] max-w-7xl mx-auto flex flex-col md:flex-row justify-center md:justify-between gap-x-5 p-5 items-center">
       <Image
         className="hidden md:block"
         src="/signIn.svg"
