@@ -1,8 +1,10 @@
 import { forwardRef } from "react";
-import { ChevronDownIcon, ExitIcon } from "@radix-ui/react-icons";
+import { AngleIcon, ChevronDownIcon, ExitIcon } from "@radix-ui/react-icons";
 import { Group, Avatar, Text, Menu, UnstyledButton } from "@mantine/core";
 import { signOut } from "next-auth/react";
 import { logOutAction } from "@/lib/actions/auth";
+import { useDisclosure } from "@mantine/hooks";
+import NotificationModal from "./NotificationModal";
 
 const UserButton = forwardRef(
   ({ image, username, email, icon, ...others }, ref) => (
@@ -26,27 +28,37 @@ const UserButton = forwardRef(
 );
 
 export default function ProfileMenu({ session }) {
+  const [opened, { open, close }] = useDisclosure(false);
   return (
-    <Menu withArrow>
-      <Menu.Target>
-        <UserButton
-          image={`https://api.dicebear.com/8.x/thumbs/svg?shapeColor=f88c49&backgroundColor=ffd5dc&seed=${session.user.username}`}
-          username={session.user.username}
-          email={session.user.email}
-        />
-      </Menu.Target>
-      <Menu.Dropdown>
-        <Menu.Item
-          onClick={async () => {
-            await signOut({ callbackUrl: "/login" });
-            await logOutAction();
-          }}
-          color="red"
-          leftSection={<ExitIcon className="w-4 h-4" />}
-        >
-          Logout
-        </Menu.Item>
-      </Menu.Dropdown>
-    </Menu>
+    <>
+      <NotificationModal opened={opened} close={close} />
+      <Menu withArrow>
+        <Menu.Target>
+          <UserButton
+            image={`https://api.dicebear.com/8.x/thumbs/svg?shapeColor=f88c49&backgroundColor=ffd5dc&seed=${session.user.username}`}
+            username={session.user.username}
+            email={session.user.email}
+          />
+        </Menu.Target>
+        <Menu.Dropdown>
+          <Menu.Item
+            onClick={open}
+            leftSection={<AngleIcon className="w-4 h-4" />}
+          >
+            Notification
+          </Menu.Item>
+          <Menu.Item
+            onClick={async () => {
+              await signOut({ callbackUrl: "/login" });
+              await logOutAction();
+            }}
+            color="red"
+            leftSection={<ExitIcon className="w-4 h-4" />}
+          >
+            Logout
+          </Menu.Item>
+        </Menu.Dropdown>
+      </Menu>
+    </>
   );
 }
